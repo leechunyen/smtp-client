@@ -1,11 +1,17 @@
 # smtp-client
- this is a web base SMTP client\
+ this is a web base SMTP client
+
+## Library
+ Bootstrap\
+ jQuery\
+ PHP-Miller
+
+# Limit
  maximum subject character length is 255\
  maximum content character length is 384000\
  total of attached file size is allow upto 30MB
 
 # API key for 'send-email.php'
-
  HTTP request type: POST
 
  ## Required field
