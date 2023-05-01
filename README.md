@@ -16,7 +16,7 @@
  ## Limitation
   maximum subject character length is 255\
   maximum content character length is 384000\
-  total of attached file size is allow upto 30MB\
+  total of attached file size is allow upto 30MB
 
 # API key for 'send-email.php'
  HTTP request type: POST
@@ -27,7 +27,7 @@
   encryption - encryption type [ssl / tls / none]\
   send_from[address] - send email by using this email address / sender email address\
   send_to[] - send email to (this is required atless 1 email address)\
-  content - email content\
+  content - email content
 
  ## Optional field
   send_from['name'] - sender name\
@@ -36,7 +36,7 @@
   cc[] - cc email address\
   bcc[] - bcc email address\
   subject - email subject\
-  attachments[] - attach file when send email\
+  attachments[] - attach file when send email
   
  ## Other field
   auth - authentication to the mail server [1 = yes, 0 = no]\
