@@ -1,5 +1,7 @@
 # smtp-client
- this is a web base SMTP client
+ this is a web base SMTP client you can send email using it.\
+ just duwnload and put it in to Web Server.\
+ the 'index.html' is a ready Web UI to use.
 
 ## Library
  Bootstrap\
@@ -9,7 +11,8 @@
 # Limit
  maximum subject character length is 255\
  maximum content character length is 384000\
- total of attached file size is allow upto 30MB
+ total of attached file size is allow upto 30MB\
+ minimum PHP version not sure, I developing on php 8.1.
 
 # API key for 'send-email.php'
  HTTP request type: POST
