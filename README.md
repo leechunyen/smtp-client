@@ -2,7 +2,7 @@
  this is a web base SMTP client you can send email using it.\
  just download and put it in to Web Server.\
  the 'index.html' is a ready Web UI to use.\
- you must prepare your own mail server.\
+ you must prepare your own mail server.
  
  ## Requirement
   web server eg:nginx apache etc...
