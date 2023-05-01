@@ -5,7 +5,7 @@
  you must prepare your own mail server.
  
  ## Requirement
-  web server eg:nginx apache etc...
+  web server eg:nginx apache etc...\
   php support (minimum PHP version not sure [developing on php 8.1])
  
  ## Library
