@@ -240,6 +240,7 @@ if($pass){
         }
 
         $mail->send();
+        $mail->ClearAddresses();
         $success = true;
         array_push($msg,'Email has been sent');
     } catch (Exception $e) {
