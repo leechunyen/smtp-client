@@ -193,7 +193,7 @@ if($pass){
         if(isset($_POST['send_from']['name'])&&!empty($_POST['send_from']['name'])){
             $senderName = $_POST['send_from']['name'];
         }
-        $mail->addReplyTo($_POST['send_from']['address'], $senderName);
+        $mail->setFrom($_POST['send_from']['address'], $senderName);
         
         foreach($_POST['send_to'] as $emailAddr){
             if(!empty($emailAddr)){
