@@ -1,0 +1,120 @@
+{
+	"info": {
+		"_postman_id": "f7b2eb6b-54d9-4e97-a0e2-5dcce3366f6b",
+		"name": "SMTP-Client",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "18696829"
+	},
+	"item": [
+		{
+			"name": "send-email API",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "host",
+							"value": "smtp.example.com",
+							"type": "text"
+						},
+						{
+							"key": "port",
+							"value": "465",
+							"type": "text"
+						},
+						{
+							"key": "encryption",
+							"value": "ssl",
+							"description": "none, ssl or tls",
+							"type": "text"
+						},
+						{
+							"key": "auth",
+							"value": "1",
+							"description": "1 = yes, 0 = no",
+							"type": "text"
+						},
+						{
+							"key": "username",
+							"value": "my@example.com",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "password",
+							"type": "text"
+						},
+						{
+							"key": "send_from[address]",
+							"value": "my@example.com",
+							"type": "text"
+						},
+						{
+							"key": "send_from['name']",
+							"value": "Sender Name",
+							"description": "optional",
+							"type": "text"
+						},
+						{
+							"key": "send_to[]",
+							"value": "example@gmail.com",
+							"type": "text"
+						},
+						{
+							"key": "reply_to[address]",
+							"value": "my@example.com",
+							"description": "optional",
+							"type": "text"
+						},
+						{
+							"key": "reply_to[name]",
+							"value": "recipient name",
+							"description": "optioanl",
+							"type": "text"
+						},
+						{
+							"key": "cc[]",
+							"value": "example@hotmail.com",
+							"description": "optioanl",
+							"type": "text"
+						},
+						{
+							"key": "bcc[]",
+							"value": "example@hotmail.com",
+							"description": "optioanl",
+							"type": "text"
+						},
+						{
+							"key": "subject",
+							"value": "email subject",
+							"description": "optional",
+							"type": "text"
+						},
+						{
+							"key": "content",
+							"value": "email body",
+							"type": "text"
+						},
+						{
+							"key": "attachments[]",
+							"value": "[attach file to send]",
+							"description": "optional",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "https://example.com",
+					"protocol": "https",
+					"host": [
+						"example",
+						"com"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
