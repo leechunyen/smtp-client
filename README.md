@@ -23,5 +23,6 @@
   to run on postman import [This](SMTP-Client.postman_collection.json) to postman
 
 # Support to this project
-  donate to me THANK for your support\
+  donate to me\
   [Donate Link](https://gogetfunding.com/open-source-project-and-library/)\
+  THANK for your support
