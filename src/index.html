@@ -32,7 +32,7 @@
                     <label class="col-sm-2 col-form-label">Host/Port</label>
                     <div class="col-sm-10">
                         <div class="input-group mb-3">
-                            <input type="text" class="form-control config-form" id="ip-host" placeholder="Host">
+                            <input type="text" class="form-control config-form" id="ip-host" placeholder="FQDN/IP address">
                             <input style="max-width: 20%;" type="text" class="form-control config-form" id="ip-port" placeholder="Port">
                         </div>
                     </div>
@@ -93,7 +93,11 @@
                 </div>
                 <div class="div-act-btn">
                     <button type="button" class="btn btn-secondary" id="actbtn-config-clear">Clear Config</button>
-                    <button type="button" class="btn btn-primary" id="actbtn-config-done">Done</button>
+                    <div>
+                        <button type="button" class="btn btn-primary" id="actbtn-config-save">Save</button>
+                        <button type="button" class="btn btn-primary" id="actbtn-config-done">Done</button>
+                    </div>
+                    
                 </div>
             </div>
             <div class="session" id="session-send-email">
@@ -171,6 +175,64 @@
     <!-- end pop up mact-res-odal -->
     <script>
         var attachmentFles = [];
+        // on load
+        $(document).ready(function(){
+            let host = getCookie('host');
+            let port = getCookie('port');
+            let enc = getCookie('enc');
+            let auth = getCookie('auth');
+            let usn = getCookie('usn');
+            let psw = getCookie('psw');
+            let sendFrom = getCookie('sendFrom');
+            let sendFromName = getCookie('sendFromName');
+            let replyTo = getCookie('replyTo');
+            let replyToName = getCookie('replyToName');
+            if(host !== null){
+                $('#ip-host').val(host);
+            }
+            if(port !== null){
+                $('#ip-port').val(port);
+            }
+            if(enc !== null){
+                switch(enc){
+                    case 'none':
+                        $('#ipcb-encryption-none').prop('checked', true);
+                        break;
+                    case 'ssl':
+                        $('#ipcb-encryption-ssl').prop('checked', true);
+                        break;
+                    case 'tls':
+                        $('#ipcb-encryption-tls').prop('checked', true);
+                        break;
+                }
+            }
+            if(auth !== null){
+                if(auth == 1){
+                    $('#ipsw-auth').prop('checked',true);
+                    if(usn !== null){
+                        $('#ip-auth-username').val(usn);
+                    }
+                    if(psw !== null){
+                        $('#ip-auth-password').val(psw);
+                    }
+                    $('#auth-info').removeClass('hiden');
+                }else{
+                    $('#ipsw-auth').prop('checked',false);
+                }
+            }
+            if(sendFrom !== null){
+                $('#ip-send-from').val(sendFrom);
+            }
+            if(sendFromName !== null){
+                $('#ip-send-from-name').val(sendFromName);
+            }
+            if(replyTo !== null){
+                $('#ip-reply-to').val(replyTo);
+            }
+            if(replyToName !== null){
+                $('#ip-reply-to-name').val(replyToName);
+            }
+        });
         // changing tab
         $('.tab-link').click(function () {
             $('.tab-link').removeClass('active');
@@ -201,12 +263,40 @@
                 $('#ipsw-auth').prop('checked', false);
                 $('#auth-info').addClass('hiden');
                 $('#send-email-tab').addClass('hiden');
+                clearAllCookies();
             }
         });
         // config-form change remove class is-invalid
         $('.config-form,#ipcb-encryption-none,#ipsw-auth').change(function () {
             $('#send-email-tab').addClass('hiden');
             $('.config-form').removeClass('is-invalid');
+        });
+        // on config page save click
+        $('#actbtn-config-save').click(function(){
+            setCookie('host',$('#ip-host').val(),false);
+            setCookie('port',$('#ip-port').val(),false);
+            setCookie('enc',$('input[name="ipcb-encryption"]:checked').val(),false);
+            if($('#ipsw-auth').prop('checked')){
+                setCookie('auth',1,false);
+                setCookie('usn',$('#ip-auth-username').val(),false);
+                setCookie('psw',$('#ip-auth-password').val(),false);
+            }else{
+                setCookie('auth',0,false);
+            }
+            setCookie('sendFrom',$('#ip-send-from').val(),false);
+            setCookie('sendFromName',$('#ip-send-from-name').val(),false);
+            setCookie('replyTo',$('#ip-reply-to').val(),false);
+            setCookie('replyToName',$('#ip-reply-to-name').val(),false);
+            msgs = ['save config Success'];
+            // show result
+            $('#act-res-modal-title').html('Success');
+            let op = '<ul>';
+            msgs.forEach(function(msg){
+                op += '<li>'+msg+'</li>';
+            });
+            op += '</ul>';
+            $('#act-res-modal-content').html(op);
+            new bootstrap.Modal(document.getElementById('act-res')).show();
         });
         // on config page done click
         $('#actbtn-config-done').click(function () {
@@ -217,13 +307,17 @@
                 msgs.push('host is required');
                 $('#ip-host').addClass('is-invalid');
                 pass = false;
+            } else if ($('#ip-host').val() !== 'localhost' && !isValidFQDN($('#ip-host').val()) && !isValidIPaddress($('#ip-host').val()) && !isValidIPv6Address($('#ip-host').val())) {
+                msgs.push('invalid hostname/ip address \''+$('#ip-host').val()+'\'');
+                $('#ip-host').addClass('is-invalid');
+                pass = false;
             }
             if ($('#ip-port').val() === '') {
                 msgs.push('port is required');
                 $('#ip-port').addClass('is-invalid');
                 pass = false;
-            } else if (isNaN($('#ip-port').val())) {
-                msgs.push('port is only number');
+            } else if (!isValidPortNumber($('#ip-port').val())) {
+                msgs.push('port is numeric and between the range of 1 and 65535');
                 $('#ip-port').addClass('is-invalid');
                 pass = false;
             }
