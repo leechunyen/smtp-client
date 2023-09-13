@@ -188,6 +188,10 @@ if($pass){
         if($encryption <> 'none'){$mail->SMTPSecure = $encryption;}
         $mail->Port       = $_POST['port'];
 
+        //Char Set and encoding
+        $mail->CharSet = 'UTF-8';
+        $mail->Encoding = 'base64';
+
         //Recipients
         $senderName = null;
         if(isset($_POST['send_from']['name'])&&!empty($_POST['send_from']['name'])){
