@@ -27,7 +27,7 @@
 						{
 							"key": "encryption",
 							"value": "ssl",
-							"description": "none, ssl or tls",
+							"description": "STARTTLS, TLSorSSL or none]",
 							"type": "text"
 						},
 						{
