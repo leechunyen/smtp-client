@@ -1,8 +1,13 @@
 <html>
 
 <head>
+    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mail Server Tester</title>
+    <meta name="description" content="Mail Server Tester - send test emails from your mail server.">
+    <meta name="keywords" content="SMTP Client, Mail, Email, Server, Test, SMTP, Configuration">
+    <meta name="author" content="cylee">
+    <meta name="robots" content="index, follow">
+    <title>SMTP Client</title>
     <link rel="stylesheet" href="bootstrap-5.2.3-dist/css/bootstrap.min.css">
     <script src="bootstrap-5.2.3-dist/js/bootstrap.min.js"></script>
     <script src="jquery-3.6.4.min/jquery-3.6.4.min.js"></script>
@@ -13,7 +18,7 @@
     <nav class="navbar bg-light">
         <div class="container-fluid">
             <a class="navbar-brand">
-                Mail Server Tester
+                SMTP Client
             </a>
         </div>
     </nav>
@@ -27,13 +32,14 @@
             </li>
         </ul>
         <div id="session">
+<!--configure session-->
             <div class="session active-session" id="session-configuration">
                 <div class="mb-3 row">
                     <label class="col-sm-2 col-form-label">Host/Port</label>
                     <div class="col-sm-10">
                         <div class="input-group mb-3">
                             <input type="text" class="form-control config-form" id="ip-host" placeholder="FQDN/IP address">
-                            <input style="max-width: 20%;" type="text" class="form-control config-form" id="ip-port" placeholder="Port">
+                            <input style="max-width: 20%;" type="text" class="form-control config-form" id="ip-port" placeholder="Port" value="25">
                         </div>
                     </div>
                 </div>
@@ -43,10 +49,10 @@
                         <div class="btn-group" role="group" aria-label="radio toggle button group">
                             <input type="radio" class="btn-check" name="ipcb-encryption" id="ipcb-encryption-none" value="none" checked>
                             <label class="btn btn-outline-primary" for="ipcb-encryption-none">None</label>
-                            <input type="radio" class="btn-check" name="ipcb-encryption" id="ipcb-encryption-tls" value="tls">
-                            <label class="btn btn-outline-primary" for="ipcb-encryption-tls">TLS</label>
-                            <input type="radio" class="btn-check" name="ipcb-encryption" id="ipcb-encryption-ssl" value="ssl">
-                            <label class="btn btn-outline-primary" for="ipcb-encryption-ssl">SSL</label>
+                            <input type="radio" class="btn-check" name="ipcb-encryption" id="ipcb-encryption-STARTTLS" value="STARTTLS">
+                            <label class="btn btn-outline-primary" for="ipcb-encryption-STARTTLS">STARTTLS</label>
+                            <input type="radio" class="btn-check" name="ipcb-encryption" id="ipcb-encryption-TLSorSSL" value="TLSorSSL">
+                            <label class="btn btn-outline-primary" for="ipcb-encryption-TLSorSSL">TLS/SSL</label>
                         </div>
                     </div>
                 </div>
@@ -97,29 +103,30 @@
                         <button type="button" class="btn btn-primary" id="actbtn-config-save">Save</button>
                         <button type="button" class="btn btn-primary" id="actbtn-config-done">Done</button>
                     </div>
-                    
                 </div>
             </div>
+<!--end configure session-->
+<!--send email session-->
             <div class="session" id="session-send-email">
                 <div class="mb-3 row">
                     <label class="col-sm-2 col-form-label">Send To</label>
                     <div class="col-sm-10">
                         <input type="text" class="form-control send-email-form" id="ip-send-email-send-to" placeholder="Email , Email , Email">
-                        <small class="ip-notice">use comma to split mutiple email address</small>
+                        <small class="ip-notice">use comma to split multiple email address</small>
                     </div>
                 </div>
                 <div class="mb-3 row">
                     <label class="col-sm-2 col-form-label">CC</label>
                     <div class="col-sm-10">
                         <input type="text" class="form-control send-email-form" id="ip-send-email-cc" placeholder="Email , Email , Email">
-                        <small class="ip-notice">use comma to split mutiple email address</small>
+                        <small class="ip-notice">use comma to split multiple email address</small>
                     </div>
                 </div>
                 <div class="mb-3 row">
                     <label class="col-sm-2 col-form-label">BCC</label>
                     <div class="col-sm-10">
                         <input type="text" class="form-control send-email-form" id="ip-send-email-bcc" placeholder="Email , Email , Email">
-                        <small class="ip-notice">use comma to split mutiple email address</small>
+                        <small class="ip-notice">use comma to split multiple email address</small>
                     </div>
                 </div>
                 <hr>
@@ -152,6 +159,7 @@
                     </button>
                 </div>
             </div>
+<!--end send email session-->
         </div>
     </div>
     <!-- load panel -->
@@ -198,11 +206,11 @@
                     case 'none':
                         $('#ipcb-encryption-none').prop('checked', true);
                         break;
-                    case 'ssl':
-                        $('#ipcb-encryption-ssl').prop('checked', true);
+                    case 'TLSorSSL':
+                        $('#ipcb-encryption-TLSorSSL').prop('checked', true);
                         break;
-                    case 'tls':
-                        $('#ipcb-encryption-tls').prop('checked', true);
+                    case 'STARTTLS':
+                        $('#ipcb-encryption-STARTTLS').prop('checked', true);
                         break;
                 }
             }
@@ -231,6 +239,19 @@
             }
             if(replyToName !== null){
                 $('#ip-reply-to-name').val(replyToName);
+            }
+        });
+        // when encryption type change
+        $('input[name="ipcb-encryption"]').change(function() {
+            var selectedValue = $('input[name="ipcb-encryption"]:checked').val();
+
+            // Handle the selected value
+            if (selectedValue === 'none') {
+                $('#ip-port').val('25');
+            } else if (selectedValue === 'STARTTLS') {
+                $('#ip-port').val('587');
+            } else if (selectedValue === 'TLSorSSL') {
+                $('#ip-port').val('465');
             }
         });
         // changing tab
@@ -289,7 +310,7 @@
             setCookie('replyToName',$('#ip-reply-to-name').val(),false);
             msgs = ['save config Success'];
             // show result
-            $('#act-res-modal-title').html('Success');
+            $('#act-res-modal-title').html('Success').css('color', '#06cf50');
             let op = '<ul>';
             msgs.forEach(function(msg){
                 op += '<li>'+msg+'</li>';
@@ -353,7 +374,7 @@
                 $('#send-email-tab').removeClass('hiden');
                 $('#send-email-tab a').trigger('click');
             } else {
-                $('#act-res-modal-title').html('Error');
+                $('#act-res-modal-title').html('Error').css('color', '#fa0a0a');
                 let op = '<ul>';
                 msgs.forEach(function(msg){
                     op += '<li>'+msg+'</li>';
@@ -525,10 +546,10 @@
                     const res = $.parseJSON(response);
                     let op = '<ul>';
                     if(res['success']){
-                        $('#act-res-modal-title').html('Success');
+                        $('#act-res-modal-title').html('Success').css('color', '#06cf50');
                         // sendEmailReset();
                     }else{
-                        $('#act-res-modal-title').html('Error');
+                        $('#act-res-modal-title').html('Error').css('color', '#fa0a0a');
                     }
                     res['message'].forEach(function(msg){
                         op += '<li>'+msg+'</li>';
@@ -538,7 +559,7 @@
                     new bootstrap.Modal(document.getElementById('act-res')).show();
                 })
                 .fail(function(jqXHR,textStatus){
-                    $('#act-res-modal-title').html('Error');
+                    $('#act-res-modal-title').html('Error').css('color', '#fa0a0a');
                     $('#act-res-modal-content').html('<ul><li>'+textStatus+'</li></ul>');
                     new bootstrap.Modal(document.getElementById('act-res')).show();
                 })
@@ -547,7 +568,7 @@
                     $('#actbtn-send').show();
                 });
             }else{
-                $('#act-res-modal-title').html('Error');
+                $('#act-res-modal-title').html('Error').css('color', '#fa0a0a');
                 let op = '<ul>';
                 msgs.forEach(function(msg){
                     op += '<li>'+msg+'</li>';

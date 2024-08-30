@@ -4,7 +4,7 @@
  ## Required field
   host - SMTP server host ip/domain\
   port - SMTP server port number\
-  encryption - encryption type [ssl / tls / none]\
+  encryption - encryption type [STARTTLS / TLSorSSL / none]\
   send_from[address] - send email by using this email address / sender email address\
   send_to[] - send email to (this is required atless 1 email address)\
   content - email content

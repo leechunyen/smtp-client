@@ -26,11 +26,11 @@ if(!isset($_POST['port'])||empty($_POST['port'])){
 
 if(isset($_POST['encryption'])&&!empty($_POST['encryption'])){
     if($_POST['encryption'] == 'none'){
-        $encryption = 'none';
-    }else if($_POST['encryption'] == 'tls'){
-        $encryption = 'tls';
-    }else if($_POST['encryption'] == 'ssl'){
-        $encryption = 'ssl';
+        $encryption = '';
+    }else if($_POST['encryption'] == 'STARTTLS'){
+        $encryption = PHPMailer::ENCRYPTION_STARTTLS;
+    }else if($_POST['encryption'] == 'TLSorSSL'){
+        $encryption = PHPMailer::ENCRYPTION_SMTPS;
     }else{
         array_push($msg,'invalid encryption');
         $pass = false;
@@ -191,6 +191,15 @@ if($pass){
         //Char Set and encoding
         $mail->CharSet = 'UTF-8';
         $mail->Encoding = 'base64';
+
+        // Disable certificate verification
+        $mail->SMTPOptions = array(
+            'ssl' => array(
+                'verify_peer' => false,
+                'verify_peer_name' => false,
+                'allow_self_signed' => true
+            )
+        );
 
         //Recipients
         $senderName = null;
